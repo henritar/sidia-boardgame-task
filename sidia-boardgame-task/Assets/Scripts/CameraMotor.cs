@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class CameraMotor : MonoBehaviour
 {
+    //List of players whom the camera is looking at
     [SerializeField] private List<Transform> lookAt = default;
 
+    //offset so the camera can be positioned correctly
     private Vector3 offset_player1 = default;
     private Vector3 offset_player2 = default;
 
@@ -29,6 +31,8 @@ public class CameraMotor : MonoBehaviour
     // Update is called once per frame
     private void LateUpdate()
     {
+
+        //change camera to the player who is able to move in that turn
         if (playerOneTurn)
         {
 

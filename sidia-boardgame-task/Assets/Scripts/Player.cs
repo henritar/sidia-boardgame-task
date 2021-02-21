@@ -17,7 +17,6 @@ public class Player : Pieces
         if(CurrentZ != z || CurrentX != x){
             if(x >= 0 && z >= 0 && Mathf.Abs(CurrentX - x) < 2 && Mathf.Abs(CurrentZ - z) < 2 && Mathf.Abs(CurrentX - x) != Mathf.Abs(CurrentZ -z) )
             {
-                SetPosition(x, z);
                 return true;
 
             }

@@ -15,9 +15,10 @@ public class BoardManager : MonoBehaviour
     private int _tileSelectedZ = -1;
 
     //Active player turn
-    private Player playerAbleToAct;
+    private Player playerAbleToAct = default;
 
-    public List<GameObject> powerUpsPrefabs;
+    //List of powerup prefebs to initialize them on the field
+    public List<GameObject> powerUpsPrefabs = default;
 
     //Map to know which prefab is occupying which tile
     public Pieces[,] PiecesMap { set; get; }
@@ -116,26 +117,7 @@ public class BoardManager : MonoBehaviour
         PiecesMap[lastTile, lastTile].SetPosition(lastTile, lastTile);
     }
 
-    //private void SpawnPlayers()
-    //{
-    //    int lastTile = (int)BOARD_DEFAULT_SIZE - 1;
-
-
-    //    //Spawn players on first and last tile of the board
-    //    GameObject player1 = Instantiate(playersPrefabs[0], GetTitleCenterPosition(0, 0, 0.5f), Quaternion.identity) as GameObject;
-    //    GameObject player2 = Instantiate(playersPrefabs[1], GetTitleCenterPosition(lastTile, lastTile, 0.5f), Quaternion.identity) as GameObject;
-       
-    //    //Set players as child of the board so they can move altogether
-    //    player1.transform.SetParent(transform);
-    //    player2.transform.SetParent(transform);
-
-    //    //Set them into the map so we are able to know which tite is occupied
-    //    PiecesMap[0, 0] = player1.GetComponent<Pieces>();
-    //    PiecesMap[0, 0].SetPosition(0, 0); 
-    //    PiecesMap[lastTile, lastTile] = player2.GetComponent<Pieces>();
-    //    PiecesMap[lastTile, lastTile].SetPosition(lastTile, lastTile);
-    //}
-
+ 
     private void SpawnPowerUps()
     {
         //Spawn a powerup for each title except that ones where the players start
@@ -176,18 +158,25 @@ public class BoardManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            
+            Player player;
             //Verify if the player are able to move to target tile
             if (playerAbleToAct.LegalMoves(_tileSelectedX, _tileSelectedZ))
             {
+                player = playerAbleToAct.GetComponent<Player>();
                 //Update location map
                 PiecesMap[playerAbleToAct.CurrentX, playerAbleToAct.CurrentZ] = null;
-                playerAbleToAct.GetComponent<Player>().MovePlayer(GetTitleCenterPosition(_tileSelectedX, _tileSelectedZ, 0.5f));
+                
+                player.MovePlayer(GetTitleCenterPosition(_tileSelectedX, _tileSelectedZ, 0.5f));
                 PiecesMap[_tileSelectedX, _tileSelectedZ] = playerAbleToAct;
+                PiecesMap[_tileSelectedX, _tileSelectedZ].SetPosition(_tileSelectedX, _tileSelectedZ);
             }
             else
             {
                 return;
+            }
+            if (SearchForNearbyPlayer(player.transform.position))
+            {
+                Debug.Log("FOUND A PLAYER NEARBY!");
             }
         }
     }
@@ -204,5 +193,42 @@ public class BoardManager : MonoBehaviour
         {
             playerAbleToAct = GameObject.FindGameObjectWithTag("Player2").GetComponent<Player>();
         }
+    }
+
+    private bool SearchForNearbyPlayer(Vector3 playerPostion)
+    {
+        
+        //Player one verifies if there is another player nearby
+        if (playerOneTurn)
+        {
+            int right = (int)playerPostion.x + 1;
+            int left = (int)playerPostion.x - 1;
+            int up = (int)playerPostion.z + 1;
+            int down = (int)playerPostion.z - 1;
+
+            if ((right <= BOARD_DEFAULT_SIZE - 1 && PiecesMap[right, (int)playerPostion.z] != null && PiecesMap[right, (int)playerPostion.z].tag.Contains("Player")) || (left >= 0 && PiecesMap[left, (int)playerPostion.z] != null && PiecesMap[left, (int)playerPostion.z].tag.Contains("Player"))
+            || (up <= BOARD_DEFAULT_SIZE - 1 && PiecesMap[(int)playerPostion.x, up] != null && PiecesMap[(int)playerPostion.x, up].tag.Contains("Player")) || (down >= 0 && PiecesMap[(int)playerPostion.x, down] != null && PiecesMap[(int)playerPostion.x, down].tag.Contains("Player")))
+            {
+                return true;
+            }
+
+        }
+        //Player one verifies if there is another player nearby (Two different codes because player 2 starts at the opposite edge of the field (15,15))
+        else
+        {
+            int down = (int)playerPostion.x + 1;
+            int up = (int)playerPostion.x - 1;
+            int right = (int)playerPostion.z + 1;
+            int left = (int)playerPostion.z - 1;
+
+            if ((right <= BOARD_DEFAULT_SIZE - 1 && PiecesMap[(int)playerPostion.x, right] != null && PiecesMap[(int)playerPostion.x, right].tag.Contains("Player")) || (left >= 0 && PiecesMap[(int)playerPostion.x, left] != null && PiecesMap[(int)playerPostion.x, left].tag.Contains("Player"))
+                 || (up >= 0 && PiecesMap[up, (int)playerPostion.z] != null && PiecesMap[up, (int)playerPostion.z].tag.Contains("Player")) || (down <= BOARD_DEFAULT_SIZE - 1 && PiecesMap[down, (int)playerPostion.z] != null && PiecesMap[down, (int)playerPostion.z].tag.Contains("Player")))
+            {
+                return true;
+            }
+        }
+
+        return false;
+
     }
 }

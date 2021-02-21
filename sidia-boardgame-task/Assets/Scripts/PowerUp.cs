@@ -5,13 +5,13 @@ using UnityEngine;
 public class PowerUp : Pieces
 {
 
-    [SerializeField] int id;
+    [SerializeField] int id = default;
 
 
     private void OnCollisionEnter(Collision collision)
     {
         
-        
+        //If collision is detected with some player, the power up call the correct method and them destroy itself
         if (collision.gameObject.tag.Contains("Player"))
         {
             Player player = collision.gameObject.GetComponent<Player>();
