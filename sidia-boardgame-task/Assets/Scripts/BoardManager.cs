@@ -10,25 +10,28 @@ public class BoardManager : MonoBehaviour
     private const float TITLE_SIZE = 1.0f;
     private const float TITLE_OFFSET = 0.5f;
 
-    //Selectin coordenates
+    //Selected coordenates
     private int _tileSelectedX = -1;
     private int _tileSelectedZ = -1;
 
+    //Active player turn
     private Player playerAbleToAct;
 
-    public List<GameObject> playersPrefabs;
     public List<GameObject> powerUpsPrefabs;
 
+    //Map to know which prefab is occupying which tile
     public Pieces[,] PiecesMap { set; get; }
      
-
+    //Boolean which indicates whose turn is
     public bool playerOneTurn = true;
 
 
     void Start()
     {
         PiecesMap = new Pieces[(int)BOARD_DEFAULT_SIZE, (int)BOARD_DEFAULT_SIZE];
+        //Set players to start position
         updatePlayers();
+        //Instatiate each powerup randomly
         SpawnPowerUps();
     }
 
@@ -174,9 +177,10 @@ public class BoardManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             
-            
+            //Verify if the player are able to move to target tile
             if (playerAbleToAct.LegalMoves(_tileSelectedX, _tileSelectedZ))
             {
+                //Update location map
                 PiecesMap[playerAbleToAct.CurrentX, playerAbleToAct.CurrentZ] = null;
                 playerAbleToAct.GetComponent<Player>().MovePlayer(GetTitleCenterPosition(_tileSelectedX, _tileSelectedZ, 0.5f));
                 PiecesMap[_tileSelectedX, _tileSelectedZ] = playerAbleToAct;
@@ -191,6 +195,7 @@ public class BoardManager : MonoBehaviour
 
     private void SelectPlayerTurn()
     {
+        //Change player turn
         if (playerOneTurn)
         {
             playerAbleToAct = GameObject.FindGameObjectWithTag("Player1").GetComponent<Player>();

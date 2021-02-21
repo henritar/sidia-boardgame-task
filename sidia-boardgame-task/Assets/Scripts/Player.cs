@@ -15,7 +15,7 @@ public class Player : Pieces
     public virtual bool LegalMoves(int x, int z)
     {
         if(CurrentZ != z || CurrentX != x){
-            if(x >= 0 && z >= 0 && Mathf.Abs(CurrentX - x) < 2 && Mathf.Abs(CurrentZ - z) < 2)
+            if(x >= 0 && z >= 0 && Mathf.Abs(CurrentX - x) < 2 && Mathf.Abs(CurrentZ - z) < 2 && Mathf.Abs(CurrentX - x) != Mathf.Abs(CurrentZ -z) )
             {
                 SetPosition(x, z);
                 return true;
