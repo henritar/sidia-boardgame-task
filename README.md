@@ -1,5 +1,5 @@
 # SIDIA-BoardGame-Challenge
-This Boardgame project was created as a challange for the SIDIA Hiring process.
+This Boardgame project was created as a challenge for the SIDIA Hiring process.
 
 --------------------
 ---- Game Genre ----
