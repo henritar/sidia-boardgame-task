@@ -39,6 +39,12 @@ public class BoardManager : MonoBehaviour
         //Method responsible for drawing the board boarders
         DrawBoardSkeleton();
         movePlayer();
+
+        if(playerAbleToAct.GetComponent<Player>().GetMovesAvailable() <= 0)
+        {
+            playerAbleToAct.GetComponent<Player>().Reset();
+            playerOneTurn = !playerOneTurn;
+        }
     }
 
     private void UpdateSelectionTile()
@@ -146,7 +152,7 @@ public class BoardManager : MonoBehaviour
     private void movePlayer()
     {
         //Select which player can move this turn
-        selectPlayerTurn();
+        SelectPlayerTurn();
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -155,7 +161,7 @@ public class BoardManager : MonoBehaviour
             if (playerAbleToAct.LegalMoves(_tileSelectedX, _tileSelectedZ))
             {
                 PiecesMap[playerAbleToAct.CurrentX, playerAbleToAct.CurrentZ] = null;
-                playerAbleToAct.transform.position = GetTitleCenterPosition(_tileSelectedX, _tileSelectedZ, 0.5f);
+                playerAbleToAct.GetComponent<Player>().MovePlayer(GetTitleCenterPosition(_tileSelectedX, _tileSelectedZ, 0.5f));
                 PiecesMap[_tileSelectedX, _tileSelectedZ] = playerAbleToAct;
             }
             else
@@ -166,7 +172,7 @@ public class BoardManager : MonoBehaviour
     }
 
 
-    private void selectPlayerTurn()
+    private void SelectPlayerTurn()
     {
         if (playerOneTurn)
         {

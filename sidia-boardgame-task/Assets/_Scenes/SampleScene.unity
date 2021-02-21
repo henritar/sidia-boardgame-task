@@ -421,7 +421,11 @@ MonoBehaviour:
   playersPrefabs:
   - {fileID: 2223702370771354390, guid: 59dfed1c06454cc498174e6970c0b4d2, type: 3}
   - {fileID: 4299305036376181126, guid: 9a456b0e6e71e264ea0d6ffd97f51cc5, type: 3}
-  powerUpsPrefabs: []
+  powerUpsPrefabs:
+  - {fileID: 1562072523055712638, guid: 882d05b883ab642499ab4fe77fb2739a, type: 3}
+  - {fileID: 932072055881792124, guid: ed3148a76d62ef046bdb8c039828df5c, type: 3}
+  - {fileID: 7274220353951748541, guid: 81069b8647c8405418d1bc3bb8cb78d2, type: 3}
+  playerOneTurn: 1
 --- !u!4 &2126973468
 Transform:
   m_ObjectHideFlags: 0
