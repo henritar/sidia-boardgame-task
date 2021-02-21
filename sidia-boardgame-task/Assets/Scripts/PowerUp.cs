@@ -6,6 +6,7 @@ public class PowerUp : Pieces
 {
 
     [SerializeField] int id = default;
+    [SerializeField] private AudioClip _clip = default;
 
 
     private void OnCollisionEnter(Collision collision)
@@ -15,6 +16,8 @@ public class PowerUp : Pieces
         if (collision.gameObject.tag.Contains("Player"))
         {
             Player player = collision.gameObject.GetComponent<Player>();
+
+            AudioSource.PlayClipAtPoint(_clip, Camera.main.transform.position);
 
             if (id == 0)
             {

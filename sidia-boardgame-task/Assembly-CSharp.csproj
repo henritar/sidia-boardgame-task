@@ -66,9 +66,11 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\BoardManager.cs" />
     <Compile Include="Assets\Scripts\CameraMotor.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Pieces.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\PowerUp.cs" />
+    <Compile Include="Assets\Scripts\UIManager.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/Documentos/Sidia_BoardGame_Task/sidia-boardgame-task/sidia-boardgame-task/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

@@ -68,7 +68,7 @@ public class Player : Pieces
     IEnumerator VerifyAvailablesMoves()
     {
         
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.008f);
         _movesAvailable--;
     }
 

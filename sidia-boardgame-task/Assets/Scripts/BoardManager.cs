@@ -160,7 +160,7 @@ public class BoardManager : MonoBehaviour
         {
             Player player;
             //Verify if the player are able to move to target tile
-            if (playerAbleToAct.LegalMoves(_tileSelectedX, _tileSelectedZ))
+            if (playerAbleToAct.LegalMoves(_tileSelectedX, _tileSelectedZ) && (PiecesMap[_tileSelectedX, _tileSelectedZ] == null || !PiecesMap[_tileSelectedX, _tileSelectedZ].tag.Contains("Player")))
             {
                 player = playerAbleToAct.GetComponent<Player>();
                 //Update location map

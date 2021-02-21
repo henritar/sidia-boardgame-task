@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7292286751261837258}
   - component: {fileID: -3542148626771106486}
   m_Layer: 0
-  m_Name: ExtraTurnPowerUp
+  m_Name: ExtraMovePowerUp
   m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107,3 +107,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 1
+  _clip: {fileID: 8300000, guid: 8160c6c450f04f34c8a5061e9559e47c, type: 3}
