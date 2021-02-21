@@ -418,6 +418,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5b7dbb31cba41546b85731732cc6274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playersPrefabs:
+  - {fileID: 2223702370771354390, guid: 59dfed1c06454cc498174e6970c0b4d2, type: 3}
+  - {fileID: 4299305036376181126, guid: 9a456b0e6e71e264ea0d6ffd97f51cc5, type: 3}
+  powerUpsPrefabs: []
 --- !u!4 &2126973468
 Transform:
   m_ObjectHideFlags: 0
