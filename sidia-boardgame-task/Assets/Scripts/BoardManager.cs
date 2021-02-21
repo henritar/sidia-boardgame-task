@@ -28,7 +28,7 @@ public class BoardManager : MonoBehaviour
     void Start()
     {
         PiecesMap = new Pieces[(int)BOARD_DEFAULT_SIZE, (int)BOARD_DEFAULT_SIZE];
-        SpawnPlayers();
+        updatePlayers();
         SpawnPowerUps();
     }
 
@@ -96,25 +96,42 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    private void SpawnPlayers()
+    private void updatePlayers()
     {
         int lastTile = (int)BOARD_DEFAULT_SIZE - 1;
 
+        GameObject player1 = GameObject.FindGameObjectWithTag("Player1");
+        GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
 
-        //Spawn players on first and last tile of the board
-        GameObject player1 = Instantiate(playersPrefabs[0], GetTitleCenterPosition(0, 0, 0.5f), Quaternion.identity) as GameObject;
-        GameObject player2 = Instantiate(playersPrefabs[1], GetTitleCenterPosition(lastTile, lastTile, 0.5f), Quaternion.identity) as GameObject;
-       
-        //Set players as child of the board so they can move altogether
         player1.transform.SetParent(transform);
         player2.transform.SetParent(transform);
 
         //Set them into the map so we are able to know which tite is occupied
         PiecesMap[0, 0] = player1.GetComponent<Pieces>();
-        PiecesMap[0, 0].SetPosition(0, 0); 
+        PiecesMap[0, 0].SetPosition(0, 0);
         PiecesMap[lastTile, lastTile] = player2.GetComponent<Pieces>();
         PiecesMap[lastTile, lastTile].SetPosition(lastTile, lastTile);
     }
+
+    //private void SpawnPlayers()
+    //{
+    //    int lastTile = (int)BOARD_DEFAULT_SIZE - 1;
+
+
+    //    //Spawn players on first and last tile of the board
+    //    GameObject player1 = Instantiate(playersPrefabs[0], GetTitleCenterPosition(0, 0, 0.5f), Quaternion.identity) as GameObject;
+    //    GameObject player2 = Instantiate(playersPrefabs[1], GetTitleCenterPosition(lastTile, lastTile, 0.5f), Quaternion.identity) as GameObject;
+       
+    //    //Set players as child of the board so they can move altogether
+    //    player1.transform.SetParent(transform);
+    //    player2.transform.SetParent(transform);
+
+    //    //Set them into the map so we are able to know which tite is occupied
+    //    PiecesMap[0, 0] = player1.GetComponent<Pieces>();
+    //    PiecesMap[0, 0].SetPosition(0, 0); 
+    //    PiecesMap[lastTile, lastTile] = player2.GetComponent<Pieces>();
+    //    PiecesMap[lastTile, lastTile].SetPosition(lastTile, lastTile);
+    //}
 
     private void SpawnPowerUps()
     {
