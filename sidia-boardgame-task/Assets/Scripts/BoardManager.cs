@@ -9,6 +9,7 @@ public class BoardManager : MonoBehaviour
     private const float BOARD_DEFAULT_SIZE = 16.0f;
     private const float TITLE_SIZE = 1.0f;
     private const float TITLE_OFFSET = 0.5f;
+    private const float POWER_UP_MAX = BOARD_DEFAULT_SIZE * BOARD_DEFAULT_SIZE - 2;
 
     //Selected coordenates
     private int _tileSelectedX = -1;
@@ -16,6 +17,7 @@ public class BoardManager : MonoBehaviour
 
     //Active player turn
     private Player playerAbleToAct = default;
+    [SerializeField] private int powerupsCounter;
 
     //List of powerup prefebs to initialize them on the field
     public List<GameObject> powerUpsPrefabs = default;
@@ -48,6 +50,22 @@ public class BoardManager : MonoBehaviour
         {
             playerAbleToAct.GetComponent<Player>().Reset();
             playerOneTurn = !playerOneTurn;
+        }
+
+        if(powerupsCounter < POWER_UP_MAX * 0.1)
+        {
+            int locationX = Random.Range(0, (int)BOARD_DEFAULT_SIZE);
+            int locationZ = Random.Range(0, (int)BOARD_DEFAULT_SIZE);
+
+            if(PiecesMap[locationX, locationZ] == null)
+            {
+                powerupsCounter++;
+                int randomPowerUp = Random.Range(0, 3);
+                GameObject powerUp = Instantiate(powerUpsPrefabs[randomPowerUp], GetTitleCenterPosition(locationX, locationZ, 0.15f), Quaternion.identity) as GameObject;
+                powerUp.transform.SetParent(transform);
+                PiecesMap[locationX, locationZ] = powerUp.GetComponent<Pieces>();
+                PiecesMap[locationX, locationZ].SetPosition(locationX, locationZ);
+            }
         }
     }
 
@@ -120,6 +138,7 @@ public class BoardManager : MonoBehaviour
  
     private void SpawnPowerUps()
     {
+        powerupsCounter = 0;
         //Spawn a powerup for each title except that ones where the players start
         for(int i = 0; i < BOARD_DEFAULT_SIZE; i++)
         {
@@ -131,6 +150,7 @@ public class BoardManager : MonoBehaviour
                 {
                     continue;
                 }
+                powerupsCounter++;
                 int randomPowerUp = Random.Range(0, 3);
                 GameObject powerUp = Instantiate(powerUpsPrefabs[randomPowerUp], GetTitleCenterPosition(i, j, 0.15f), Quaternion.identity) as GameObject;
                 powerUp.transform.SetParent(transform);
@@ -230,5 +250,10 @@ public class BoardManager : MonoBehaviour
 
         return false;
 
+    }
+
+    public void SubPowerUps()
+    {
+        powerupsCounter--;
     }
 }

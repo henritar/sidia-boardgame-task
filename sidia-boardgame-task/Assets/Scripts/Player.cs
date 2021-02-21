@@ -62,13 +62,14 @@ public class Player : Pieces
     public void Reset()
     {
         _movesAvailable = 3;
+        _power = 2;
     }
 
 
     IEnumerator VerifyAvailablesMoves()
     {
         
-        yield return new WaitForSeconds(0.008f);
+        yield return new WaitForSeconds(0.012f);
         _movesAvailable--;
     }
 

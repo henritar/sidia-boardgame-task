@@ -8,7 +8,12 @@ public class PowerUp : Pieces
     [SerializeField] int id = default;
     [SerializeField] private AudioClip _clip = default;
 
+    private BoardManager _board = default;
 
+    private void Start()
+    {
+        _board = GameObject.Find("GameBoard").GetComponent<BoardManager>();
+    }
     private void OnCollisionEnter(Collision collision)
     {
         
@@ -31,7 +36,7 @@ public class PowerUp : Pieces
             {
                 player.RecoverPowerUp();
             }
-
+            _board.SubPowerUps();
             Destroy(this.gameObject);
         }
     }
