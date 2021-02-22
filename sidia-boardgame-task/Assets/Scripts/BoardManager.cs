@@ -22,6 +22,8 @@ public class BoardManager : MonoBehaviour
     //List of powerup prefebs to initialize them on the field
     public List<GameObject> powerUpsPrefabs = default;
 
+    private GameManager _gameManager = default;
+
     //Map to know which prefab is occupying which tile
     public Pieces[,] PiecesMap { set; get; }
      
@@ -32,6 +34,9 @@ public class BoardManager : MonoBehaviour
     void Start()
     {
         PiecesMap = new Pieces[(int)BOARD_DEFAULT_SIZE, (int)BOARD_DEFAULT_SIZE];
+
+        _gameManager = GameObject.Find("GameManager").GetComponent <GameManager> ();
+
         //Set players to start position
         updatePlayers();
         //Instatiate each powerup randomly
@@ -196,6 +201,8 @@ public class BoardManager : MonoBehaviour
             }
             if (SearchForNearbyPlayer(player.transform.position))
             {
+                
+                _gameManager.SetGameState(3);
                 Debug.Log("FOUND A PLAYER NEARBY!");
             }
         }

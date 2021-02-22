@@ -7,6 +7,10 @@ TagManager:
   - Player1
   - Player2
   - PowerUp
+  - P1Dice
+  - P2Dice
+  - P1DiceCheck
+  - P2DiceCheck
   layers:
   - Default
   - TransparentFX

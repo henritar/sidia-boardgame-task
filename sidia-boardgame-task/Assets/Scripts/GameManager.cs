@@ -5,61 +5,82 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    private int gameState = 0; // 0 = game over; 1 = game running; 2 = game paused
+    private int gameState = 0; // 0 = game over; 1 = game running; 2 = game paused; 3 =  battle; 4 = end Battle;
     private UIManager _uiManager = default;
     private GameObject _gameBoard = default;
-    [SerializeField] List<GameObject> _player = default;
+    private GameObject _diceBox = default;
 
     private void Start()
     {
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _gameBoard = GameObject.Find("GameBoard");
-        
+        _diceBox = GameObject.Find("DiceBox");
+
+        _diceBox.SetActive(false);
+        _gameBoard.SetActive(false);
+
     }
 
     private void Update()
     {
-        //If game is not running
-        if(gameState != 1)
+        if(gameState == 2)
         {
-            //hide Gameboard
-            _gameBoard.SetActive(false);
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                startGame();
+            if (Input.GetKeyDown(KeyCode.Return)){
+                StartGame();
             }
         }
         //While game ins running, press enter to pause
-        if (Input.GetKeyDown(KeyCode.Return))
+        else if(gameState == 3)
+        {
+            EnterBattle();
+        }
+        else if(gameState == 4)
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                _uiManager.ResetBattle();
+                StartGame();
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Return))
         {
             gameState = 2;
-            _uiManager.showTitleScreen();
+            _uiManager.ShowTitleScreen();
+            
         }
     }
 
-    public void startGame()
+    public void StartGame()
     {
         
         gameState = 1;
-        _uiManager.hideTitleScreen();
+        _uiManager.HideTitleScreen();
+        _uiManager.HideBattleScreen();
        
     }
 
-    public void gameOver()
+    private void EnterBattle()
     {
-        gameState = 0;
-        _uiManager.showTitleScreen();
+        
+        gameState = 3;
+        _uiManager.ShowBattleScreen();
     }
 
-    public int getGameState()
+    public void GameOver()
+    {
+        gameState = 0;
+        _uiManager.ShowTitleScreen();
+    }
+
+    public int GetGameState()
     {
         return gameState;
     }
 
-    public void setGameState(int state)
+    public void SetGameState(int state)
     {
         //Set game state to game over if any impossible value is given
-        if(state < 0 || state > 2)
+        if(state < 0 || state > 4)
         {
             state = 0;
         }
