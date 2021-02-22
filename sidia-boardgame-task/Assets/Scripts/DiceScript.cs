@@ -39,7 +39,7 @@ public class DiceScript : MonoBehaviour
 			rb.AddForce(transform.up * 200);
 			rb.AddTorque(dirX, dirY, dirZ);
 		}
-		if(_gameManager.GetGameState() == 1)
+		if(_gameManager.GetGameState() != 3)
         {
 			initialized = false;
         }

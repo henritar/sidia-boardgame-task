@@ -130,8 +130,16 @@ public class BoardManager : MonoBehaviour
         GameObject player1 = GameObject.FindGameObjectWithTag("Player1");
         GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
 
+        
+
         player1.transform.SetParent(transform);
         player2.transform.SetParent(transform);
+
+        player1.GetComponent<Player>().RestartGame();
+        player2.GetComponent<Player>().RestartGame();
+
+        player1.transform.position = GetTitleCenterPosition(0, 0, 0.5f);
+        player2.transform.position = GetTitleCenterPosition(lastTile, lastTile, 0.5f);
 
         //Set them into the map so we are able to know which tite is occupied
         PiecesMap[0, 0] = player1.GetComponent<Pieces>();
@@ -262,5 +270,30 @@ public class BoardManager : MonoBehaviour
     public void SubPowerUps()
     {
         powerupsCounter--;
+    }
+
+    public void RestartBoard()
+    {
+        this.gameObject.SetActive(true);
+        DestroyPowerUps();
+        updatePlayers();
+        SpawnPowerUps();
+        
+    }
+
+    public void DestroyPowerUps()
+    {
+        for (int i = 0; i < BOARD_DEFAULT_SIZE; i++)
+        {
+            for (int j = 0; j < BOARD_DEFAULT_SIZE; j++)
+            {
+                if(PiecesMap[i, j] != null && PiecesMap[i,j].gameObject.tag == "PowerUp")
+                {
+                    SubPowerUps();
+                    Destroy(PiecesMap[i, j].gameObject);
+                    PiecesMap[i, j] = null;
+                }
+            }
+        }
     }
 }

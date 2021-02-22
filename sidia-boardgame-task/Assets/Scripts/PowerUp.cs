@@ -9,11 +9,20 @@ public class PowerUp : Pieces
     [SerializeField] private AudioClip _clip = default;
 
     private BoardManager _board = default;
+    private GameManager _gameManager = default;
 
     private void Start()
     {
         _board = GameObject.Find("GameBoard").GetComponent<BoardManager>();
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
+
+    private void Update()
+    {
+        
+    }
+
+
     private void OnCollisionEnter(Collision collision)
     {
         

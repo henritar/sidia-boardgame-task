@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    private int gameState = 0; // 0 = game over; 1 = game running; 2 = game paused; 3 =  battle; 4 = end Battle;
+    private int gameState = 1; // 0 = game over; 1 = game running; 2 = game paused; 3 =  battle; 4 = end Battle;
     private UIManager _uiManager = default;
     private GameObject _gameBoard = default;
     private GameObject _diceBox = default;
@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
         _gameBoard = GameObject.Find("GameBoard");
         _diceBox = GameObject.Find("DiceBox");
 
+        gameState = -1;
+
         _diceBox.SetActive(false);
         _gameBoard.SetActive(false);
 
@@ -23,10 +25,23 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if(gameState == 2)
+        if(gameState == 0)
+        {
+            GameOver();
+        }
+        else if (gameState == 1){
+
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                _uiManager.PauseGame();
+                gameState = 2;
+            }
+        }
+        else if (gameState == 2)
         {
             if (Input.GetKeyDown(KeyCode.Return)){
-                StartGame();
+                _uiManager.ResumeGame();
+                gameState = 1;
             }
         }
         //While game ins running, press enter to pause
@@ -39,14 +54,11 @@ public class GameManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 _uiManager.ResetBattle();
-                StartGame();
+                if(gameState != 0)
+                {
+                    StartGame();
+                }
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.Return))
-        {
-            gameState = 2;
-            _uiManager.ShowTitleScreen();
-            
         }
     }
 
@@ -68,8 +80,14 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        gameState = 0;
-        _uiManager.ShowTitleScreen();
+        _uiManager.ShowGameOverScreen();
+    }
+
+    public void RestartGame()
+    {
+        _gameBoard.GetComponent<BoardManager>().RestartBoard();
+        _uiManager.HideGameOverScreen();
+        gameState = 1;
     }
 
     public int GetGameState()

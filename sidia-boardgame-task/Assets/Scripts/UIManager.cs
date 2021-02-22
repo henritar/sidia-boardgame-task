@@ -9,15 +9,22 @@ public class UIManager : MonoBehaviour
    
     public int movementPlayer1;
     public int movementPlayer2;
+    public bool playerOneWin;
     public Text playerOneDiceResults;
     public Text playerTwoDiceResults;
     public Text BattleResult;
     public Text movementText;
+    public Text p1Health;
+    public Text p2Health;
     public GameObject titleScreen;
+    public GameObject gameOverScreen;
     public GameObject battleScreen;
     public GameObject HUD;
+    public GameObject pause;
     public Button start;
     public Button quit;
+    public Button replay;
+    public Button mainMenu;
     private GameManager _gameManager = default;
     private BoardManager _board = default;
     private GameObject _gameBoard = default;
@@ -35,24 +42,37 @@ public class UIManager : MonoBehaviour
         //Menu buttons
         start.onClick.AddListener(_gameManager.StartGame);
         quit.onClick.AddListener(Application.Quit);
+        replay.onClick.AddListener(_gameManager.RestartGame);
+        mainMenu.onClick.AddListener(ReturnToMainMenu);
     }
 
     private void Update()
     {
-        UpdateMovement();
+        UpdateHUD();
         
     }
 
-
-    public void UpdateMovement()
+    public void ReturnToMainMenu()
     {
+        _gameManager.RestartGame();
+        ShowTitleScreen();
+    }
+
+
+    public void UpdateHUD()
+    {
+        p1Health.text = "P1 HEALTH: " + _players[0].GetCurrentHealth();
+        p2Health.text = "P2 HEALTH: " + _players[1].GetCurrentHealth();
+
         //update on screen how many moves the current player has
         if (_board.playerOneTurn)
         {
+            
             movementText.text = "Movements: " + _players[0].GetMovesAvailable();
 
         }
         else{
+            
             movementText.text = "Movements: " + _players[1].GetMovesAvailable();
         }
 
@@ -70,6 +90,8 @@ public class UIManager : MonoBehaviour
     {
         int p1Score = 0;
         int p2Score = 0;
+
+
         UpdateDicesResults();
         List<int> p1DicesResultList = new List<int>();
         p1DicesResultList.Add(diceResults[0]);
@@ -107,35 +129,71 @@ public class UIManager : MonoBehaviour
             }
         }
 
+        
         if(p1Score > p2Score)
         {
             BattleResult.text = "PLAYER 1 WINS!";
-        }
-        else if(p1Score < p2Score)
-        {
-            BattleResult.text = "PLAYER 2 WINS!";
+            playerOneWin = true;
         }
         else
         {
-            if (_board.playerOneTurn)
-            {
-                BattleResult.text = "PLAYER 1 WINS!";
-            }
-            else
-            {
-                BattleResult.text = "PLAYER 2 WINS!";
-            }
+            BattleResult.text = "PLAYER 2 WINS!";
+            playerOneWin = false;
         }
 
         _gameManager.SetGameState(4);
 
+       
+
     }
 
+ 
     public void ResetBattle()
     {
+        bool isGameOver = false;
+        if (playerOneWin)
+        {
+            _players[1].TakeDamage(_players[0].GetCurrentPower());
+            if (_players[1].GetCurrentHealth() < 1)
+            {
+                isGameOver = true;
+            }
+        }
+        else
+        {
+            _players[0].TakeDamage(_players[1].GetCurrentPower());
+            if (_players[0].GetCurrentHealth() < 1)
+            {
+                isGameOver = true;
+            }
+        }
+
+        if (isGameOver)
+        {
+            _gameManager.SetGameState(0);
+            playerOneDiceResults.text = "";
+            playerTwoDiceResults.text = "";
+        }
+        else
+        {
+            BattleResult.text = "";
+            playerOneDiceResults.text = "Player 1 Results: ";
+            playerTwoDiceResults.text = "Player 2 Results: ";
+        }
+    }
+
+    public void ShowGameOverScreen()
+    {
+        _gameBoard.SetActive(false);
+        _diceBox.SetActive(false);
+        gameOverScreen.SetActive(true);
+    }
+
+    public void HideGameOverScreen()
+    {
         BattleResult.text = "";
-        playerOneDiceResults.text = "Player 1 Results: ";
-        playerTwoDiceResults.text = "Player 2 Results: ";
+        HideBattleScreen();
+        gameOverScreen.SetActive(false);
     }
 
     public void HideTitleScreen()
@@ -167,6 +225,22 @@ public class UIManager : MonoBehaviour
         _gameBoard.SetActive(true);
         _diceBox.SetActive(false);
         battleScreen.SetActive(false);
+        HUD.SetActive(true);
+    }
+
+    public void PauseGame() 
+    { 
+        Camera.main.GetComponent<AudioListener>().enabled = !Camera.main.GetComponent<AudioListener>().enabled;
+        pause.SetActive(true);
+        _gameBoard.SetActive(false);
+        HUD.SetActive(false);
+    }
+
+    public void ResumeGame()
+    {
+        Camera.main.GetComponent<AudioListener>().enabled = !Camera.main.GetComponent<AudioListener>().enabled;
+        pause.SetActive(false);
+        _gameBoard.SetActive(true);
         HUD.SetActive(true);
     }
 }

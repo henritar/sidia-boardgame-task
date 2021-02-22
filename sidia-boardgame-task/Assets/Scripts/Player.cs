@@ -12,6 +12,11 @@ public class Player : Pieces
 
     [SerializeField] private int _movesAvailable = 3;
 
+
+    private void Start()
+    {
+    }
+
     public virtual bool LegalMoves(int x, int z)
     {
         if(CurrentZ != z || CurrentX != x){
@@ -53,6 +58,22 @@ public class Player : Pieces
         return _movesAvailable;
     }
 
+    public int GetCurrentHealth()
+    {
+        return _health;
+    }
+
+    public int GetCurrentPower()
+    {
+        return _power;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        _health -= damage;
+        
+    }
+
     public void MovePlayer(Vector3 position)
     {
         transform.position = position;
@@ -63,6 +84,12 @@ public class Player : Pieces
     {
         _movesAvailable = 3;
         _power = 2;
+    }
+
+    public void RestartGame()
+    {
+        Reset();
+        _health = 10;
     }
 
 
