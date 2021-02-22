@@ -45,8 +45,12 @@ public class PowerUp : Pieces
             {
                 player.RecoverPowerUp();
             }
+            ParticleSystem ps = GetComponent<ParticleSystem>();
+            ps.Play();
             _board.SubPowerUps();
-            Destroy(this.gameObject);
+            GetComponent<MeshRenderer>().enabled = false;
+            GetComponent<Collider>().enabled = false;
+            Destroy(this.gameObject, ps.main.duration);
         }
     }
 }

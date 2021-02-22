@@ -16,6 +16,8 @@ public class UIManager : MonoBehaviour
     public Text movementText;
     public Text p1Health;
     public Text p2Health;
+    public Text p1Power;
+    public Text p2Power;
     public GameObject titleScreen;
     public GameObject gameOverScreen;
     public GameObject battleScreen;
@@ -63,6 +65,9 @@ public class UIManager : MonoBehaviour
     {
         p1Health.text = "P1 HEALTH: " + _players[0].GetCurrentHealth();
         p2Health.text = "P2 HEALTH: " + _players[1].GetCurrentHealth();
+        p1Power.text = "P1 Power: " + _players[0].GetCurrentPower();
+        p2Power.text = "P2 Power: " + _players[1].GetCurrentPower();
+
 
         //update on screen how many moves the current player has
         if (_board.playerOneTurn)

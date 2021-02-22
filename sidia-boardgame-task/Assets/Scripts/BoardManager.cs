@@ -51,13 +51,9 @@ public class BoardManager : MonoBehaviour
         DrawBoardSkeleton();
         movePlayer();
 
-        if(playerAbleToAct.GetComponent<Player>().GetMovesAvailable() <= 0)
-        {
-            playerAbleToAct.GetComponent<Player>().Reset();
-            playerOneTurn = !playerOneTurn;
-        }
+        GetPlayerTurn();
 
-        if(powerupsCounter < POWER_UP_MAX * 0.1)
+        if (powerupsCounter < POWER_UP_MAX * 0.1)
         {
             int locationX = Random.Range(0, (int)BOARD_DEFAULT_SIZE);
             int locationZ = Random.Range(0, (int)BOARD_DEFAULT_SIZE);
@@ -209,13 +205,23 @@ public class BoardManager : MonoBehaviour
             }
             if (SearchForNearbyPlayer(player.transform.position))
             {
-                
-                _gameManager.SetGameState(3);
+
+
+                StartCoroutine(PrepareBattleCoroutine());
                 Debug.Log("FOUND A PLAYER NEARBY!");
             }
         }
     }
+    
 
+    private void GetPlayerTurn()
+    {
+        if (playerAbleToAct.GetComponent<Player>().GetMovesAvailable() <= 0)
+        {
+            playerAbleToAct.GetComponent<Player>().Reset();
+            playerOneTurn = !playerOneTurn;
+        }
+    }
 
     private void SelectPlayerTurn()
     {
@@ -278,7 +284,7 @@ public class BoardManager : MonoBehaviour
         DestroyPowerUps();
         updatePlayers();
         SpawnPowerUps();
-        
+        playerOneTurn = true;
     }
 
     public void DestroyPowerUps()
@@ -295,5 +301,13 @@ public class BoardManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    IEnumerator PrepareBattleCoroutine()
+    {
+       
+        yield return new WaitForSeconds(0.012f);
+        _gameManager.SetGameState(3);
+
     }
 }
