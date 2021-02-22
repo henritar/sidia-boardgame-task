@@ -22,8 +22,8 @@ public class DiceScript : MonoBehaviour
 		initialized = false;
     }
 
-    // Update is called once per frame
-    void Update()
+	// Update is called once per frame
+	void Update()
 	{
 		diceVelocity = rb.velocity;
 
@@ -34,15 +34,20 @@ public class DiceScript : MonoBehaviour
 			float dirX = Random.Range(0, 500);
 			float dirY = Random.Range(0, 500);
 			float dirZ = Random.Range(0, 500);
-			transform.position = new Vector3 (Random.Range(-4, 5), Random.Range(-49, -46), Random.Range(-4, 5));
+			transform.position = new Vector3(Random.Range(-4, 5), Random.Range(-49, -46), Random.Range(-4, 5));
 			transform.rotation = Quaternion.identity;
 			rb.AddForce(transform.up * 200);
 			rb.AddTorque(dirX, dirY, dirZ);
 		}
-		if(_gameManager.GetGameState() != 3)
-        {
+		if (_gameManager.GetGameState() != 3)
+		{
 			initialized = false;
-        }
+		}
+
+		if (transform.position.y < -50f)
+        {
+			transform.position = new Vector3(Random.Range(-4, 5), Random.Range(-49, -46), Random.Range(-4, 5));
+		}
 	}
 
 	public bool IsDiceStationary()

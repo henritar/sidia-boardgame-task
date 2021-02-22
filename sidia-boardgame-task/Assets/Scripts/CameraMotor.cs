@@ -10,7 +10,8 @@ public class CameraMotor : MonoBehaviour
     //offset so the camera can be positioned correctly
     private Vector3 offset_player1 = default;
     private Vector3 offset_player2 = default;
-    [SerializeField] private Vector3 offset_dice_box = default;
+    [SerializeField] private Vector3 offset_dice_box_p1 = default;
+    [SerializeField] private Vector3 offset_dice_box_p2 = default;
 
     public float speed = 0.125f;
     public bool playerOneTurn = true;
@@ -22,7 +23,8 @@ public class CameraMotor : MonoBehaviour
     {
         offset_player1 = new Vector3(0, 6, -5);
         offset_player2 = new Vector3(5, 6, 0);
-        offset_dice_box = new Vector3(0, 7, -10);
+        offset_dice_box_p1 = new Vector3(0, 7, -8);
+        offset_dice_box_p2 = new Vector3(7, 7.5f, -0.8f);
         _board = GameObject.Find("GameBoard").GetComponent<BoardManager>();
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
@@ -61,12 +63,12 @@ public class CameraMotor : MonoBehaviour
         {
             if (playerOneTurn)
             {
-                transform.position = new Vector3(0.0f, -50.0f, 0.0f) + offset_player1;
+                transform.position = new Vector3(0.0f, -50.0f, 0.0f) + offset_dice_box_p1;
 
             }
             else
             {
-                transform.position = new Vector3(0.0f, -50.0f, 0.0f) + offset_player2;
+                transform.position = new Vector3(0.0f, -50.0f, 0.0f) + offset_dice_box_p2;
             }
         }
 
