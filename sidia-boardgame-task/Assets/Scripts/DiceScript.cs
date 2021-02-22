@@ -9,6 +9,7 @@ public class DiceScript : MonoBehaviour
 	public Vector3 diceVelocity;
 	private bool initialized = false;
 	private GameManager _gameManager = default;
+	private bool isDiceRolled;
 
 	// Use this for initialization
 	void Start()
@@ -19,6 +20,7 @@ public class DiceScript : MonoBehaviour
 
     private void OnEnable()
     {
+		isDiceRolled = false;
 		initialized = false;
     }
 
@@ -27,16 +29,17 @@ public class DiceScript : MonoBehaviour
 	{
 		diceVelocity = rb.velocity;
 
-		if (Input.GetKeyDown(KeyCode.Space) && diceVelocity.magnitude == 0 && _gameManager.GetGameState() == 3)
+		if (diceVelocity.magnitude == 0 && _gameManager.GetGameState() == 3 && !isDiceRolled)
 		{
+			isDiceRolled = true;
 			StartCoroutine(WaitToStopCoroutine());
 
 			float dirX = Random.Range(0, 500);
 			float dirY = Random.Range(0, 500);
 			float dirZ = Random.Range(0, 500);
-			transform.position = new Vector3(Random.Range(-4, 5), Random.Range(-49, -46), Random.Range(-4, 5));
+			transform.position = new Vector3(Random.Range(-4, 5), Random.Range(-49, -45), Random.Range(-4, 5));
 			transform.rotation = Quaternion.identity;
-			rb.AddForce(transform.up * 200);
+			rb.AddForce(transform.up * 300);
 			rb.AddTorque(dirX, dirY, dirZ);
 		}
 		if (_gameManager.GetGameState() != 3)
