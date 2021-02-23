@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
 {
     public static int[] diceResults = new int[6];
    
+    //Elements used in UI
     public int movementPlayer1;
     public int movementPlayer2;
     public bool playerOneWin;
@@ -50,6 +51,7 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
+        //Update Health, Power and Movement counters in Screen
         UpdateHUD();
         
     }
@@ -85,7 +87,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateDicesResults()
     {
-        //update on screen how many moves the current player has
+        //Show the result get from the dices rolls
         playerOneDiceResults.text = "Player 1 Results: " + diceResults[0] + " " + diceResults[1] + " " + diceResults[2];
         playerTwoDiceResults.text = "Player 2 Results: " + diceResults[3] + " " + diceResults[4] + " " + diceResults[5];
 
@@ -93,11 +95,14 @@ public class UIManager : MonoBehaviour
 
     public void ShowBattleResult()
     {
+        //Final score from dices comparison
         int p1Score = 0;
         int p2Score = 0;
 
 
         UpdateDicesResults();
+
+        //Array to List so it is able to sort and compare each die result 
         List<int> p1DicesResultList = new List<int>();
         p1DicesResultList.Add(diceResults[0]);
         p1DicesResultList.Add(diceResults[1]);
@@ -123,6 +128,7 @@ public class UIManager : MonoBehaviour
             }
             else
             {
+                //If dices results are equals, the turn player wins the comparison
                 if (_board.playerOneTurn)
                 {
                     p1Score++;
@@ -146,6 +152,7 @@ public class UIManager : MonoBehaviour
             playerOneWin = false;
         }
 
+        //Set game state to battle end
         _gameManager.SetGameState(4);
 
        
@@ -153,6 +160,7 @@ public class UIManager : MonoBehaviour
     }
 
  
+    //Reset the text values and do damage to the loser player
     public void ResetBattle()
     {
         bool isGameOver = false;
@@ -173,6 +181,7 @@ public class UIManager : MonoBehaviour
             }
         }
 
+        //If game is over, show GameOver screen
         if (isGameOver)
         {
             _gameManager.SetGameState(0);
@@ -187,6 +196,9 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    //THE FOLLOWING METHODS ACTIVATE AND DEACTIVATE ALL THE MENUS SCREEN AND CONTROLS WHICH GAMEOBJECT MUST BE ACTIVATED OR NOT
+
+    //Show game over screen by deativating gameboard and dicebox.
     public void ShowGameOverScreen()
     {
         _gameBoard.SetActive(false);
@@ -194,6 +206,7 @@ public class UIManager : MonoBehaviour
         gameOverScreen.SetActive(true);
     }
 
+    //Hide Game Over screen
     public void HideGameOverScreen()
     {
         BattleResult.text = "";
@@ -233,6 +246,7 @@ public class UIManager : MonoBehaviour
         HUD.SetActive(true);
     }
 
+    //Pause the game and turn off music
     public void PauseGame() 
     { 
         Camera.main.GetComponent<AudioListener>().enabled = !Camera.main.GetComponent<AudioListener>().enabled;
@@ -241,6 +255,8 @@ public class UIManager : MonoBehaviour
         HUD.SetActive(false);
     }
 
+
+    //Resume the game and turn on the music
     public void ResumeGame()
     {
         Camera.main.GetComponent<AudioListener>().enabled = !Camera.main.GetComponent<AudioListener>().enabled;

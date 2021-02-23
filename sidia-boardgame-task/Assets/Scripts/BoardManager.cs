@@ -127,13 +127,15 @@ public class BoardManager : MonoBehaviour
         GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
 
         
-
+        //Set player as child of the board
         player1.transform.SetParent(transform);
         player2.transform.SetParent(transform);
 
+        //Reset players stats to initial ones
         player1.GetComponent<Player>().RestartGame();
         player2.GetComponent<Player>().RestartGame();
 
+        //Move the players to the start tile
         player1.transform.position = GetTitleCenterPosition(0, 0, 0.5f);
         player2.transform.position = GetTitleCenterPosition(lastTile, lastTile, 0.5f);
 
@@ -159,6 +161,7 @@ public class BoardManager : MonoBehaviour
                 {
                     continue;
                 }
+                //Increment powerup counter when a power up is created
                 powerupsCounter++;
                 int randomPowerUp = Random.Range(0, 3);
                 GameObject powerUp = Instantiate(powerUpsPrefabs[randomPowerUp], GetTitleCenterPosition(i, j, 0.15f), Quaternion.identity) as GameObject;
@@ -203,6 +206,7 @@ public class BoardManager : MonoBehaviour
             {
                 return;
             }
+            //If there is any player at any adjacent tile, the battle state is triggered
             if (SearchForNearbyPlayer(player.transform.position))
             {
 
@@ -214,18 +218,21 @@ public class BoardManager : MonoBehaviour
     }
     
 
+    //Change player turn when he/her run out of moves
     private void GetPlayerTurn()
     {
         if (playerAbleToAct.GetComponent<Player>().GetMovesAvailable() <= 0)
         {
+            //Reset movement and power counters
             playerAbleToAct.GetComponent<Player>().Reset();
             playerOneTurn = !playerOneTurn;
         }
     }
 
+    //Get the Player object that corresponds to the current turn player
     private void SelectPlayerTurn()
     {
-        //Change player turn
+        
         if (playerOneTurn)
         {
             playerAbleToAct = GameObject.FindGameObjectWithTag("Player1").GetComponent<Player>();
@@ -254,7 +261,7 @@ public class BoardManager : MonoBehaviour
             }
 
         }
-        //Player one verifies if there is another player nearby (Two different codes because player 2 starts at the opposite edge of the field (15,15))
+        //Player two verifies if there is another player nearby (Two different codes because the camera change its position since the player 2 starts at the opposite edge of the field (15,15))
         else
         {
             int down = (int)playerPostion.x + 1;
@@ -273,11 +280,13 @@ public class BoardManager : MonoBehaviour
 
     }
 
+    //Subtract powerUps counter when it leaves the board
     public void SubPowerUps()
     {
         powerupsCounter--;
     }
 
+    //Restart the board when the game restart
     public void RestartBoard()
     {
         this.gameObject.SetActive(true);
@@ -287,6 +296,7 @@ public class BoardManager : MonoBehaviour
         playerOneTurn = true;
     }
 
+    //Clean all the left powerups from previous game
     public void DestroyPowerUps()
     {
         for (int i = 0; i < BOARD_DEFAULT_SIZE; i++)
@@ -303,6 +313,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    //Routine pre battle so the movement counter can subtract correctly before battle begins
     IEnumerator PrepareBattleCoroutine()
     {
        

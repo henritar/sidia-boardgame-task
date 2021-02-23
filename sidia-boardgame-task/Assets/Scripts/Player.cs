@@ -13,10 +13,7 @@ public class Player : Pieces
     [SerializeField] private int _movesAvailable = 3;
 
 
-    private void Start()
-    {
-    }
-
+    //Verify if the player selected a legal move (inside the board, adjacent tile and not diagonally)
     public virtual bool LegalMoves(int x, int z)
     {
         if(CurrentZ != z || CurrentX != x){
@@ -80,19 +77,21 @@ public class Player : Pieces
         StartCoroutine(VerifyAvailablesMoves());
     }
 
+    //Reset movement and power counters
     public void Reset()
     {
         _movesAvailable = 3;
         _power = 2;
     }
 
+    //Restore player to default values
     public void RestartGame()
     {
         Reset();
         _health = 10;
     }
 
-
+    //Coroutine to reduce player's movement counter
     IEnumerator VerifyAvailablesMoves()
     {
         

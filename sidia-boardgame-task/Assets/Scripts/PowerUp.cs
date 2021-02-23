@@ -31,8 +31,11 @@ public class PowerUp : Pieces
         {
             Player player = collision.gameObject.GetComponent<Player>();
 
+
+            //Play collectible sound when any player collect it
             AudioSource.PlayClipAtPoint(_clip, Camera.main.transform.position);
 
+            //Execute proper powerup effect on player
             if (id == 0)
             {
                 player.ExtraAtkPowerUp();
@@ -45,9 +48,12 @@ public class PowerUp : Pieces
             {
                 player.RecoverPowerUp();
             }
+            //Play particle effet when any player collect it
             ParticleSystem ps = GetComponent<ParticleSystem>();
             ps.Play();
             _board.SubPowerUps();
+
+            //Hide collectible and destroy it when the effect finish
             GetComponent<MeshRenderer>().enabled = false;
             GetComponent<Collider>().enabled = false;
             Destroy(this.gameObject, ps.main.duration);

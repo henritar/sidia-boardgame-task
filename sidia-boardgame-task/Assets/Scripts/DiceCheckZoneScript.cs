@@ -21,16 +21,19 @@ public class DiceCheckZoneScript : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate()
 	{
+		//Verify if all dices are stationary so the results can be shown
 		dicesStationary = AreAllDicesStationaries();
 	}
 
 	void OnTriggerStay(Collider col)
 	{
 
+		//if all dices are stationary
 		if (dicesStationary)
 		{
 			int id = col.gameObject.GetComponent<SideCheckScript>().id;
 
+			//Populate the result of each dice based on the opposite side that collide to the boxdice collider
 			switch (col.gameObject.name)
 			{
 				case "SideCheck1":
@@ -52,6 +55,8 @@ public class DiceCheckZoneScript : MonoBehaviour
 					UIManager.diceResults[id] = 1;
 					break;
 			}
+
+			//Trigger battle results
 			_uiManager.ShowBattleResult();
 		}
 	}

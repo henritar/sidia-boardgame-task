@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    private int gameState = 1; // 0 = game over; 1 = game running; 2 = game paused; 3 =  battle; 4 = end Battle;
+    private int gameState = 1; //-1 = Initial state; 0 = game over; 1 = game running; 2 = game paused; 3 =  battle; 4 = end Battle;
     private UIManager _uiManager = default;
     private GameObject _gameBoard = default;
     private GameObject _diceBox = default;
@@ -25,10 +25,12 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        //if game over, show game over screen
         if(gameState == 0)
         {
             GameOver();
         }
+        //if the game is running and the return key is pressed, pause the game
         else if (gameState == 1){
 
             if (Input.GetKeyDown(KeyCode.Return))
@@ -37,6 +39,7 @@ public class GameManager : MonoBehaviour
                 gameState = 2;
             }
         }
+        //if the game is paused and the return key is pressed, resume the game
         else if (gameState == 2)
         {
             if (Input.GetKeyDown(KeyCode.Return)){
@@ -44,11 +47,12 @@ public class GameManager : MonoBehaviour
                 gameState = 1;
             }
         }
-        //While game ins running, press enter to pause
+        //If battle state, trigger battle event
         else if(gameState == 3)
         {
             EnterBattle();
         }
+        //If battle end state, wait the players to press return key to return to the board (gamestate 1). If Game Over state, go to first if statement
         else if(gameState == 4)
         {
             if (Input.GetKeyDown(KeyCode.Return))

@@ -31,6 +31,7 @@ public class CameraMotor : MonoBehaviour
 
     private void Update()
     {
+            //Get which playeris the current turn player so the camera can follow the correct player
             playerOneTurn = _board.playerOneTurn;
     }
 
@@ -61,6 +62,7 @@ public class CameraMotor : MonoBehaviour
         }
         else
         {
+            //If game state is Battle State, show player's diceBox Perspective
             if (playerOneTurn)
             {
                 transform.position = new Vector3(0.0f, -50.0f, 0.0f) + offset_dice_box_p1;
